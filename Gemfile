@@ -58,3 +58,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 #カリキュラムの指示で記載4-4
 gem 'devise'
+
+#カリキュラムの指示で記載4-22
+gem 'kaminari','~> 1.2.1'
