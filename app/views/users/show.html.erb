@@ -1,12 +1,20 @@
 <!-- ユーザーの詳細 -->
-<div>
-  <h3><%= @user.name %></h3>
-  <%= image_tag @user.get_profile_image(100,100) %>
-  <% if @user == current_user %>
-    <p><%= link_to "プロフィール編集", edit_user_path(@user) %></p>
+
+<!--"profile-container"は検索結果ゼロ、width75％、子要素をフレックスボックスにする、margin左右自動
+左右位置均等割り付け、縦位置は中央揃え、下の枠線を表示、padding上下5-->
+<div class="profile-container w-75 d-flex mx-auto justify-content-around align-items-center border-bottom py-5">
+  <!--丸く表示する-->
+  <%= image_tag @user.get_profile_image(100,100), class:"rounded-circle";  %>
+  <!--"profile-name"は検索結果ゼロ、見出しの大きさ4（大1～6小）-->
+  <h5 class="profile-name display-4"><%= @user.name %></h5>
+  <% if @user.id == current_user.id %>
+    <!--margin上自動-->
+    <div class="mt-auto">
+    <!--文字色ダーク-->
+      <p><%= link_to "プロフィール編集", edit_user_path(@user), class:"text-dark" %></p>
+    </div>
   <% end %>
 </div>
 
 <!-- ユーザーの投稿一覧 -->
-
 <%= render 'post_images/list', post_images: @post_images %>
