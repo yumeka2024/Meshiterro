@@ -1,13 +1,46 @@
-<% post_images.each do |post_image| %>
-<div>
-  <%= link_to post_image_path(post_image.id) do %>
-    <%= image_tag post_image.get_image %>
+<!--"card-list-container"について検索結果ゼロ、padding上下5-->
+<div class="card-list-container py-5">
+  <% post_images.each do |post_image| %>
+  
+  <!--カードのレイアウトで表示、Width50％、margin左右自動、上4、影を大きく付ける-->
+  <div class="card w-50 mx-auto mt-4 shadow-lg">
+    
+    <%= link_to post_image_path(post_image.id) do %>
+      <!--カードの上部に画像を配置（投稿画像）-->
+      <%= image_tag post_image.get_image, class: "card-img-top"; %>
+    <% end %>
+    
+    <!--カードの中身-->
+    <div class="card-body">
+      <!--Rowクラス-->
+      <div class="row">
+        
+        <!--Colクラス、横幅2列分（プロフィール画像）-->
+        <div class="col-2">
+          <!--margin上3、丸く表示（角を丸くする機能のサークル指定）-->
+          <%= image_tag post_image.user.get_profile_image(100,100), class: "mt-3 rounded-circle"; %>
+        </div>
+        
+        <!--Colクラス、横幅10列分（その他）-->
+        <div class="col-10">
+          <!--カードのタイトル-->
+          <p class="card-title">
+            <!--文字色ダーク-->
+            <%= link_to(post_image_path(post_image.id), class: "text-dark") do %>
+              <!--FontAwesomeのクラス（旗）-->
+              <strong><i class="far fa-flag"></i><span> <%= post_image.shop_name %></span></strong>
+            <% end %>
+          </p>
+          <!--カードのテキスト、本文-->
+          <p class="card-text">説明：<%= post_image.caption %></p>
+          <!--FontAwesomeのクラス（人）-->
+          <span><i class="fas fa-user"></i> By <%= post_image.user.name %> ｜ </span>
+          <!--文字色ダーク-->
+          <span><%= link_to "#{post_image.post_comments.count} コメント", post_image_path(post_image.id), class: "text-dark" %></span>
+        </div>
+      </div>
+    </div>
+  </div>
   <% end %>
-  <p>投稿ユーザー画像：<%= image_tag post_image.user.get_profile_image(100,100) %></p>
-  <p>ショップ名：<%= post_image.shop_name %></p>
-  <p>説明：<%= post_image.caption %></p>
-  <p>ユーザーネーム：<%= post_image.user.name %></p>
-  <p><%= link_to "#{post_image.post_comments.count} コメント", post_image_path(post_image.id) %></p>
+  <%= paginate post_images %>
 </div>
-<% end %>
-<%= paginate post_images %>
