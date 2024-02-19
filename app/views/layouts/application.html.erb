@@ -11,16 +11,37 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <!--直下の子要素をフレックスアイテムに変換、上から下に並べる、height100（ビューポート単位）-->
   <body class="d-flex flex-column vh-100">
+
+<!--ヘッダー-->
+
+    <!--要素自体に影を付ける（sm＝ちょっとだけ）-->
     <header class="shadow-sm">
+      <!--ナビゲーションバーの使用、画面幅（lg）でナビゲーションを折り畳む、
+      背景が黒系（.navbar-dark）白系（.nabvar-light）を指定（文字色などが変わる）
+      v5.2.0以降、.navbar-lightは非推奨、デフォルトで"light"、.navbar-darkで上書き
+      v5.3.0以降、新しいダークナビゲーションバーdata-bs-theme="dark"を使用するため、.navbar-darkを廃止-->
       <nav class="navbar navbar-expand-lg navbar-light">
+        <!--コンテナクラス-->
         <div class="container">
+          <!--ブランド(銘柄)を表示、padding3、クリックするとトップページに飛ぶ-->
           <a class="navbar-brand p-3" href="/"><%= image_tag('logo.png') %></a>
+          <!--ハンバーガーメニュー（ボタン）
+          トグル（オンオフスイッチ）を使用
+          type属性をbuttonに指定（思わぬ挙動を防ぐため）
+          トグルで折り畳む（collapse）ように指定
+          折り畳む対象はid="navbarNavDropdown"
+          読み上げブラウザなどに付加情報として「対象、開閉状態、ラベル(文字情報)」を与える-->
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
                         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <!--ナビゲーションアイコン（三本線）を表示する-->
             <span class="navbar-toggler-icon"></span>
           </button>
+          <!--トグルによって折り畳む内容（collapseとnavbar-collapseはセット）
+          上記のボタンで折り畳む対象として指定するためにidを付与-->
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <!--トグルによって表示する内容、margin左自動-->
             <ul class="navbar-nav ml-auto">
             <% if user_signed_in? %>
             <li class="nav-item">
@@ -45,20 +66,39 @@
         </div>
       </nav>
     </header>
+
+<!--メイン-->
+
+    <!--margin下自動-->
     <main class="mb-auto">
+
     <%= yield %>
+
     </main>
+
+<!--フッター-->
+
+    <!--背景色ダーク、文字色白、padding上5、下4-->
     <footer class="bg-dark text-white pt-5 pb-4">
+      <!--コンテナクラス-->
       <div class="container">
+        <!--Rowクラス、ガーター（左右のpadding）をなくす
+        （Rowに設定されている-15pxのマイナスマージンも削除）-->
         <div class="row no-gutters">
+
+          <!--Colクラス、画面幅（md）で横幅4列分-->
           <div class="col-md-4">
             <p>善良な市民同士で無差別に食欲を煽るSNS</p>
             <%= image_tag('logo-white.png') %>
           </div>
+          <!--Colクラス、画面幅（md）で横幅8列分-->
           <div class="col-md-8">
+            <!--文字色白、margin上2、下3-->
             <h6 class="text-white mt-2 mb-3">Link</h6>
+            <!--padding0、リストの先頭マーク無し-->
             <ul class="p-0 list-unstyled">
               <li>
+                <!--補足情報（ツールチップ表示&音声読み上げ）追加、文字色50％白-->
                 <a href="" title="About" class="text-white-50">会社概要</a>
               </li>
               <li>
@@ -66,8 +106,10 @@
               </li>
             </ul>
           </div>
+
         </div>
       </div>
     </footer>
+
   </body>
 </html>
