@@ -1,26 +1,53 @@
+<!--コンテナクラス-->
 <div class="container">
+
+  <!--Rowクラス、ガーター（左右padding）なし-->
   <div class="row no-gutters">
+
+    <!--Colクラス、画面幅（md）で横幅5列分、（sm）で10列分、margin左右2、画面幅（sm）で自動、
+    テキスト位置中央揃え、影を大きく付ける、角を丸める、padding左右0、上下5-->
     <div class="col-md-5 col-sm-10 mx-2 mx-sm-auto text-center shadow-lg rounded px-0 my-5">
+      <!--文字色ダーク、背景色ライト、padding上下4、margin下0-->
       <h5 class="text-dark bg-light py-4 mb-0">プロフィール編集</h5>
+      <!--"form-body"について検索結果ゼロ、padding4-->
       <div class="form-body p-4">
+
         <%= form_with model: @user, local: true do |f| %>
+          <!--テキスト入力のレイアウトで表示、margin下3-->
           <div class="input-group mb-3">
+            <!--テキスト入力に付記する（前）
+            v4では記載が必要、v5では記載が不要-->
             <div class="input-group-prepend">
+              <!--付記するテキスト、音声読み上げスキップ--><!--FontAwesomeのクラス（人）-->
               <span class="input-group-text" aria-hidden="true"><i class="fas fa-user"></i></span>
             </div>
+            <!--自動で入力状態になる、入力欄、idを付与（なぜ？）、入力前に薄く「名前」と表示する-->
             <%= f.text_field :name, autofocus: true, class:"form-control", id:"inputName", placeholder:"名前"%>
           </div>
+
+          <!--入力欄、margin上下3-->
           <div class="input-group my-3">
+            <!--テキスト入力に付記する（前）
+            v4では記載が必要、v5では記載が不要-->
             <div class="input-group-prepend">
+              <!--付記するテキスト、音声読み上げスキップ--><!--FontAwesomeのクラス（写真）-->
               <span class="input-group-text" aria-hidden="true"><i class="fas fa-image"></i></span>
             </div>
+            <!--ファイル（データ）をアップロードするフォームを囲む-->
             <div class="custom-file">
+              <!--ファイル（データ）をアップロードするフォーム、画像データだけ、見えなくする-->
               <%= f.file_field :profile_image, class: 'custom-file-input', accept: "image/*", style: "display: none;" %>
+              <!--ファイル（データ）をアップロードするフォームのラベル、forでidを指定する（idがない？）、テキスト位置左-->
               <label class="custom-file-label" for="user_profile_image" style="text-align: left;">プロフィール画像</label>
             </div>
           </div>
+
+          <!--ボタンのレイアウトで表示、大きさは大、幅を親要素に揃える、種類はinfo、margin上5
+          ボタンの幅を親要素に合わせる場合、btn-blockを使うのはv4
+          v5ではdisplayユーティリティとgapユーティリティを組み合わせる-->
           <%= f.submit "変更を保存", class:"btn btn-lg btn-block btn-info mt-5" %>
         <% end %>
+
       </div>
     </div>
   </div>
