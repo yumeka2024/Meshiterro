@@ -1,20 +1,59 @@
-<h1>画像投稿フォーム</h1>
+<!--コンテナクラス-->
+<div class="container">
 
-<% if @post_image.errors.any? %>
-  <%= @post_image.errors.count %>件のエラーが発生しました
-  <ul>
-    <% @post_image.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
-<% end %>
+  <!--Rowクラス、ガーター（左右のpadding）をなくす-->
+  <div class="row no-gutters">
+    <!--Colクラス、横幅は画面幅（md）で5列分、画面幅（sm）で10列分、
+    margin左右2、画面幅（sm）で自動、影を大きく入れる、角を丸める、
+    padding左右0、上下5-->
+    <div class="col-md-5 col-sm-10 mx-2 mx-sm-auto shadow-lg rounded px-0 my-5">
+      <!--文字色ダーク、背景色ライト、padding4、margin下0-->
+      <h5 class="text-dark bg-light p-4 mb-0">画像投稿フォーム</h5>
+      <!--"form-body"について検索結果ゼロ、padding4-->
+      <div class="form-body p-4">
 
-<%= form_with model: @post_image do |f| %>
-  <h4>画像</h4>
-  <%= f.file_field :image, accept: "image/*" %>
-  <h4>ショップ名</h4>
-  <%= f.text_field :shop_name %>
-  <h4>説明</h4>
-  <%= f.text_area :caption %>
-  <%= f.submit '投稿' %>
-<% end %>
+        <!--アラート-->
+        <% if @post_image.errors.any? %>
+          <!--アラートのレイアウトで表示、
+          アラートの種類はdanger（危険、色が変わるだけ）、role="alert"はセット-->
+          <ul class="alert alert-danger" role="alert">
+            <!--アラートの見出し-->
+            <h6 class="alert-heading">
+              <%= @post_image.errors.count %>件のエラーが発生しました
+            </h6>
+            <% @post_image.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <!--投稿欄-->
+        <%= form_with model: @post_image do |f| %>
+          <!--Width100％-->
+          <%= f.file_field :image, accept: "image/*", class: "w-100" %>
+          <!--テキスト入力のレイアウトで表示、margin下3、上4-->
+          <div class="input-group mb-3 mt-4">
+            <!--テキスト入力に付記する（前）
+            v4では記載が必要、v5では記載が不要-->
+            <div class="input-group-prepend">
+              <!--付記するテキスト、音声読み上げスキップ--><!--FontAwesomeのクラス（建物）-->
+              <span class="input-group-text" aria-hidden="true"><i class="fas fa-building"></i></span>
+            </div>
+            <!--入力欄、入力前に薄く「ショップ名」と表示する-->
+            <%= f.text_field :shop_name, class: "form-control", placeholder: "ショップ名" %>
+          </div>
+          <!--入力欄、高さは3行分、入力前に薄く「コメントここに」と表示する-->
+          <%= f.text_area :caption, class: "form-control", rows: "3", placeholder: "コメントここに" %>
+          
+          <hr> <!--横線-->
+          
+          <!--ボタンのレイアウトで表示、大きさは大、親要素の幅に合わせる、
+          ボタンの種類はinfo（情報、色が変わるだけ）、margin上4
+          ボタンの幅を親要素に合わせる場合、btn-blockを使うのはv4
+          v5ではdisplayユーティリティとgapユーティリティを組み合わせる-->
+          <%= f.submit '投稿', class: "btn btn-lg btn-block btn-info mt-4" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
