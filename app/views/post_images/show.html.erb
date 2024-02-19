@@ -1,65 +1,126 @@
+<!--"post-detail"について検索結果ゼロ、padding上下5、背景色ライト-->
 <div class="post-detail py-5 bg-light">
+
+  <!--カードのレイアウトで表示、Width75％、margin左右自動、上4、影を大きく付ける-->
   <div class="card w-75 mx-auto mt-4 shadow-lg">
+
+    <!--カードの上部に画像を配置（投稿画像）-->
     <%= image_tag @post_image.get_image, class:"card-img-top"; %>
+
+    <!--カードの中身-->
     <div class="card-body">
+      <!--Rowクラス-->
       <div class="row">
+        <!--Colクラス、横幅2列分（プロフィール画像）-->
         <div class="col-2">
-           <%= image_tag @post_image.user.get_profile_image(100,100), class:"mt-3 rounded-circle";  %>
+          <!--margin上3、丸く表示（角を丸くする機能のサークル指定）-->
+          <%= image_tag @post_image.user.get_profile_image(100,100), class:"mt-3 rounded-circle";  %>
         </div>
+
+        <!--Colクラス、横幅10列分（その他）-->
         <div class="col-10">
+
+          <!--カードのタイトル-->
           <p class="card-title">
+            <!--文字色ダーク-->
             <%= link_to(post_image_path(@post_image.id), class:"text-dark") do %>
+              <!--FontAwesomeのクラス（旗）-->
               <strong><i class="far fa-flag"></i><span> <%= @post_image.shop_name %></span></strong>
             <% end %>
           </p>
+
+          <!--カードのタイトル、本文-->
           <p class="card-title">説明：<%= @post_image.caption %></p>
+          <!--FontAwesomeのクラス（人）-->
           <span><i class="fas fa-user"></i> By <%= @post_image.user.name %> ｜ </span>
+          <!--FontAwesomeのクラス（カレンダー）-->
           <span><i class="fa fa-calendar"></i> <%= @post_image.created_at.strftime('%Y/%m/%d') %> ｜ </span>
-          <span><i class="fa fa-comment"></i> <%= link_to "#{@post_image.post_comments.count}", post_image_path(@post_image.id), class:"text-dark" %> ｜ </span>
+          <span>
+            <!--FontAwesomeのクラス（ふきだし）-->
+            <i class="fa fa-comment"></i>
+            <!--文字色ダーク-->
+            <%= link_to "#{@post_image.post_comments.count}", post_image_path(@post_image.id), class:"text-dark" %> ｜
+          </span>
+
+          <!--いいね機能-->
           <% if @post_image.favorited_by?(current_user) %>
             <span>
+              <!--文字色ダーク-->
               <%= link_to(post_image_favorite_path(@post_image), class:"text-dark", method: :delete) do %>
+                <!--FontAwesomeのクラス（ハート）、音声読み上げスキップ-->
                 <i class="fa fa-heart" aria-hidden="true"></i> <%= @post_image.favorites.count %>
               <% end %>
             </span>
+
             <% else %>
             <span>
+              <!--文字色ダーク-->
               <%= link_to(post_image_favorite_path(@post_image), class:"text-dark", method: :post) do %>
+                <!--FontAwesomeのクラス（ハート）、音声読み上げスキップ-->
                 <i class="fa fa-heart" aria-hidden="true"></i> <%= @post_image.favorites.count %>
               <% end %>
             </span>
           <% end %>
+
+          <!--記事削除機能-->
           <% if @post_image.user == current_user %>
+            <!--文字色ダーク-->
             <span> ｜ </span><%= link_to "削除", post_image_path(@post_image), class:"text-dark", method: :delete %>
           <% end %>
+
         </div>
+
       </div>
-      <hr>
+
+      <hr> <!--区切り線-->
+
+      <!--コメント機能-->
+      <!--"comments"について検索結果ゼロ、カードのテキスト、本文-->
       <div class="comments card-text">
+        <!--margin上3-->
         <h4 class="mt-3"><%= @post_image.post_comments.count %>件コメント</h4>
+
         <% @post_image.post_comments.each do |post_comment| %>
+          <!--メディアのレイアウトで表示、枠線表示、margin下3-->
           <div class="media border mb-3">
+            <!--"bd-placeholder-img"について検索結果は出るが適切な情報を見つけられず、縦位置中央揃え、margin左右3-->
             <%= image_tag post_comment.user.get_profile_image(60,60), class:"bd-placeholder-img align-self-center mx-3";  %>
+            <!--メディアの中身、margin左4、padding3-->
             <div class="media-body ml-4 p-3">
               <p><%= post_comment.created_at.strftime('%Y/%m/%d') %><%= post_comment.comment %></p>
               <p><%= post_comment.comment %></p>
+
               <% if post_comment.user == current_user %>
+                <!--ボタンのレイアウトで表示、ボタンの種類はdanger、右寄せ
+                右寄せを"pull-right"で行うのはv3、v4以降は削除されており使えない-->
                 <%= link_to "削除", post_image_post_comment_path(post_comment.post_image, post_comment), method: :delete, class: "btn btn-danger pull-right" %>
               <% end %>
+
             </div>
           </div>
         <% end %>
+
       </div>
-      <hr>
+
+      <hr> <!--区切り線-->
+
+      <!--"new-comment"について検索結果ゼロ、カードのテキスト、本文-->
       <div class="new-comment card-text">
         <%= form_with(model:[@post_image, @post_comment]) do |f| %>
+          <!--入力欄を囲う部分の設定-->
           <div class="form-group">
+            <!--forでidを指定（なぜかフォーム側にidがない？）-->
             <label for="exampleFormControlTextarea1">コメントする</label>
+            <!--高さは5行分、入力欄、入力前に薄く「コメントをここに」と表示する-->
             <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
           </div>
+          <!--ボタンのレイアウトで表示、大きさは大、ボタンの種類はinfo、margin上2、右寄せ
+          右寄せを"pull-right"で行うのはv3、v4以降は削除されており使えない
+          が、なぜか右寄せできてる？-->
           <%= f.submit "送信する", class:"btn btn-lg btn-info mt-2 float-right" %>
         <% end %>
       </div>
+
     </div>
   </div>
 </div>
